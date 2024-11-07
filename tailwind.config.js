@@ -3,8 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      backgroundImage:
-        "url(https://wallpapers.com/images/hd/e-commerce-1920-x-1080-wallpaper-tb4uqckgoo0883zw.jpg)",
+      backgroundImage: {
+        "banner-img": "url('/assets/images/banner1.jpg')", // Update the path accordingly
+      },
     },
   },
   plugins: [],

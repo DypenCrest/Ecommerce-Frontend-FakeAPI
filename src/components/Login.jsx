@@ -20,20 +20,21 @@ const Login = () => {
     fetchUserLogin(data)
       .then((res) => {
         localStorage.setItem("token", res.token);
+        localStorage.setItem("user", data.username);
         navigate("/products");
       })
       .catch((err) => toast(err.response.data));
   };
   return (
     <form
-      className=" shadow-2xl rounded-3xl py-10 ps-20 pe-10 mx-auto w-[60%]"
+      className=" shadow-2xl rounded-3xl py-5 md:py-10 ps-5 md:ps-20 pe-5 md:pe-10 mx-auto w-[90%] md:w-[60%]"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h1 className="text-3xl font-bold ">Welcome to Ecommerce Demo Project</h1>
-      <div className="flex justify-between items-center py-4 bg-red">
+      <h1 className="text-xl md:text-3xl font-bold ">Welcome to Ecommerce Demo Project</h1>
+      <div className="block md:flex justify-between items-center py-4">
         <div className="flex flex-col items-start gap-3 w-full">
-          <h1 className="text-5xl font-bold mx-auto mb-4">Sign In</h1>
-          <div className="w-full h-[60px]">
+          <h1 className="text-2xl md:text-5xl font-bold mx-auto mb-4">Sign In</h1>
+          <div className="w-full h-[40px] md:h-[60px]">
             <div className="flex border-b-2">
               <PersonIcon />
               <input
@@ -46,7 +47,7 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="w-full h-[60px]">
+          <div className="w-full h-[40px] md:h-[60px]">
             <div className="flex border-b-2">
               <LockIcon />
               <input

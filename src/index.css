@@ -25,3 +25,24 @@
   font-size: smaller;
   text-align: start;
 }
+
+.swiper-pagination-bullet {
+  background-color: white;
+}
+.swiper-pagination-bullet:hover {
+  background-color: rgb(255, 102, 0);
+}
+
+.swiper-button-prev {
+  color: white;
+}
+.swiper-button-prev:hover {
+  color: rgb(255, 102, 0);
+}
+
+.swiper-button-next {
+  color: white;
+}
+.swiper-button-next:hover {
+  color: rgb(255, 102, 0);
+}

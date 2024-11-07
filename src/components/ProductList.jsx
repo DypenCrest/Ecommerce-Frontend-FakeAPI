@@ -1,31 +1,43 @@
+import SearchIcon from "@mui/icons-material/Search";
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import useProducts from "../hooks/useProducts";
+import { fetchProducts } from "../apiLayer";
 
 const ProductList = () => {
-  const [productList] = useProducts();
-  console.log(productList);
+  const [limit, setLimit] = useState(8);
+  // const [productList] = useProducts();
+  // console.log(productList);
   const [searchValue, setSearchValue] = useState("");
-  const filteredProducts = productList.filter((product) =>
-    product.title.toLowerCase().includes(searchValue.toLowerCase())
+
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["productList", limit],
+    queryFn: () => fetchProducts(limit),
+  });
+  console.log(data, "listko");
+  const filteredProducts = data?.filter((product) =>
+    product?.title?.toLowerCase().includes(searchValue.toLowerCase())
   );
+  console.log(data, "queryko");
   return (
-    <div className="mt-10 px-20 py-10">
-      <div className="flex justify-center">
+    <div className="mt-10 px-20 pb-10">
+      <div className="flex justify-start items-center md:w-[25%] border-2 mx-auto py-1 px-2 rounded-md gap-2">
+        <SearchIcon />
         <input
-          className=" border-2 focus:outline-none px-2 py-1 "
+          className="  focus:outline-none w-full border-s px-1"
           type="search"
           placeholder="search here..."
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
 
-      <div className="flex gap-8 flex-wrap justify-center items-center pt-10">
-        {filteredProducts.map((product) => (
+      <div className="flex gap-8 flex-wrap justify-center items-center py-10">
+        {isLoading && <span>Loading...</span>}
+        {filteredProducts?.map((product) => (
           <div key={product.id}>
-            <div class="w-[270px] h-[400px] bg-white border border-gray-200 rounded-lg shadow ">
+            <div class="w-[350px] md:w-[270px] h-[450px] md:h-[400px] bg-white border border-gray-200 rounded-lg shadow ">
               <a href="#">
                 <img
-                  class="p-8 rounded-t-lg h-[300px] w-full"
+                  class="p-8 rounded-t-lg h-[360px] md:h-[300px] w-full"
                   src={product.image}
                   alt={product.title}
                 />
@@ -52,6 +64,16 @@ const ProductList = () => {
           </div>
         ))}
       </div>
+      {filteredProducts?.length < 20 && (
+        <div className="flex justify-center items-center">
+          <button
+            className="bg-blue-400 text-white p-2 hover:bg-blue-600"
+            onClick={() => setLimit((prev) => prev + 8)}
+          >
+            Show More
+          </button>
+        </div>
+      )}
     </div>
   );
 };

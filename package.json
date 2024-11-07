@@ -17,8 +17,10 @@
     "@fontsource/poppins": "^5.0.16",
     "@mui/icons-material": "^6.0.2",
     "@mui/material": "^6.0.2",
+    "@tanstack/react-query": "^5.56.0",
     "axios": "^1.7.7",
     "formik": "^2.4.6",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-awesome-reveal": "^4.2.14",
     "react-dom": "^18.3.1",
@@ -26,11 +28,14 @@
     "react-router": "^6.26.1",
     "react-router-dom": "^6.26.1",
     "react-toastify": "^10.0.5",
+    "swiper": "^11.1.14",
     "yup": "^1.4.0",
-    "yup-password": "^0.4.0"
+    "yup-password": "^0.4.0",
+    "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@tanstack/eslint-plugin-query": "^5.53.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",

@@ -3,64 +3,108 @@ import { Drawer, List } from "@mui/material";
 import React, { useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import { useLocation, useNavigate } from "react-router";
+import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const dropdownToggler = () => setOpen(!open);
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
+  const profile = localStorage.getItem("user");
+  let decoded = "";
+  if (token) {
+    try {
+      decoded = jwtDecode(token);
+    } catch (err) {
+      toast(err.message);
+    }
+  }
+  const { sub: userId } = decoded;
 
   return (
     <div>
-      <div className="fixed h-20 bg-zinc-800 z-10 w-full">
+      <div className="fixed h-20 bg-zinc-900 z-10 w-full">
         <div className="flex justify-between items-center w-full px-5 sm:px-12 mt-4">
           <Fade delay={300} duration={200}>
             <h1
-              className="head-name border-4 border-orange-300 hover:border-orange-200 shadow-[0px_0px_15px_2px_#f6ad55] hover:shadow-[0px_0px_30px_10px_#f6ad55] duration-300 p-2 rounded-md hover:cursor-pointer text-orange-200 hover:text-orange-100 "
+              className="flex items-center head-name  duration-300 p-2 rounded-md hover:cursor-pointer text-2xl text-white font-bold hover:text-orange-500 "
               onClick={() => {
-                location.pathname === "/products"
+                location.pathname === "/"
                   ? window.scrollTo({ top: 0, behavior: "smooth" })
-                  : navigate("/products");
+                  : navigate("/");
               }}
             >
-              Ecommerce Demo
+              <StorefrontIcon fontSize="large" />
+              <span className="text-purple-400">EStore</span>.
+              <span className="text-pink-400">Demo</span>
             </h1>
           </Fade>
-          <div className="flex justify-center items-center">
+          <div className="flex justify-end items-center text-sm md:text-base w-[50%] md:w-full">
             {token ? (
-              <ul className="text-white">
-                <li>Profile</li>
-              </ul>
+              <button
+                type="button"
+                className="hover:text-orange-500 cursor-pointer text-white relative"
+                id="dropdown"
+                data-dropdown-toggle="dropdown-profile"
+                onClick={dropdownToggler}
+              >
+                {profile} <ArrowDropDownSharpIcon />
+              </button>
             ) : (
               <button
+                type="button"
                 onClick={() => navigate("/login")}
                 className=" font-medium text-white border px-4 py-2 rounded-md bg-orange-500 hover:border-orange-500 hover:bg-white hover:text-orange-500 duration-30"
               >
                 Login/Register
               </button>
             )}
+
+            {/* <!-- Dropdown menu --> */}
+            {open && (
+              <div
+                id="dropdown-profile"
+                class="z-10 absolute top-14 font-normal bg-zinc-800 divide-y divide-gray-100 rounded-lg shadow w-32"
+              >
+                <ul
+                  class="py-2 text-sm text-gray-400 cursor-pointer"
+                  aria-labelledby="dropdownLargeButton"
+                >
+                  <li>
+                    <a
+                      class="block px-4 py-2 hover:bg-orange-500 hover:text-white"
+                      onClick={() => {
+                        dropdownToggler();
+                        navigate(`/users/${userId}`);
+                      }}
+                    >
+                      Edit Profile
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-orange-500 hover:text-white"
+                      onClick={() => {
+                        dropdownToggler();
+                        localStorage.removeItem("user");
+                        localStorage.removeItem("token");
+                        navigate("/");
+                      }}
+                    >
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-      <Drawer
-        variant="temporary"
-        open={open}
-        onClose={handleClose}
-        disableScrollLock={true}
-      >
-        <div className="div-closebtn">
-          <CloseSharpIcon
-            onClick={handleClose}
-            role="button"
-            tabIndex="0"
-            aria-label="Close"
-          />
-        </div>
-        <List>asdasd</List>
-      </Drawer>
     </div>
   );
 };
